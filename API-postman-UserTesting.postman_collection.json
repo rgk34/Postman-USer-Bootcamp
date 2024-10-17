@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "37e7fad0-f174-42de-ac46-296f965e4ea5",
-		"name": "API-postman-UserTesting",
+		"name": "API-Postman-UserTesting",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "37274119"
 	},
@@ -426,56 +426,6 @@
 			"response": []
 		},
 		{
-			"name": "create a new user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"User created successfully\", function () {\r",
-							"    pm.expect(pm.response.code).to.eql(201); // Expect status code 201 for created\r",
-							"    const responseJson = pm.response.json(); // Parse the response as JSON\r",
-							"    if (responseJson.user_id) {  // Check if user_id is present in the response\r",
-							"        pm.environment.set(\"userId\", responseJson.user_id); // Set userId in the environment\r",
-							"        console.log(\"User ID set:\", responseJson.user_id); // Log the userId for debugging\r",
-							"    } else {\r",
-							"        pm.test(\"Response does not contain user_id\", function() {\r",
-							"            pm.expect.fail(\"user_id not found in the response\");\r",
-							"        });\r",
-							"    }\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"user_first_name\": \"RagRash\",\r\n    \"user_last_name\": \"SiriSonu\",\r\n    \"user_contact_number\": 3010191421,\r\n    \"user_email_id\": \"Team01SiriSonuRR@gmail.com\",\r\n    \"userAddress\": {\r\n      \"plotNumber\": \"P1-11\",\r\n      \"street\": \"Main\",\r\n      \"state\": \"LA\",\r\n      \"country\": \"USA\",\r\n      \"zipCode\": 20875\r\n    }\r\n  }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url_global}}/{{posturl_QA_env}}",
-					"host": [
-						"{{url_global}}"
-					],
-					"path": [
-						"{{posturl_QA_env}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Validate if the User update is done with missing EmailId",
 			"event": [
 				{
@@ -595,83 +545,6 @@
 					],
 					"path": [
 						"deleteuser",
-						"{{userid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update by UserId",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 for successful user update\", function () {\r",
-							"    pm.expect(pm.response.code).to.eql(200); // Expect status code 200 for a successful update\r",
-							"});\r",
-							"\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is as expected\", function () {\r",
-							"    pm.expect(pm.response.code).to.eql(200); // Expect 200 OK for successful update\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response contains updated user information\", function () {\r",
-							"    const responseJson = pm.response.json();\r",
-							"    pm.expect(responseJson.user_last_name).to.eql(\"Smithy\"); // Check if the last name is updated\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "userapi@october",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "Numpy@gmail.com",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"user_first_name\": \"RagRash\",\r\n    \"user_last_name\": \"SiriSonu\",\r\n    \"user_contact_number\": 4874191484,\r\n    \"user_email_id\": \"Team03RSiriSonuR@gmail.com\",\r\n    \"userAddress\": {\r\n      \"plotNumber\": \"P1-11\",\r\n      \"street\": \"Main\",\r\n      \"state\": \"LA\",\r\n      \"country\": \"USA\",\r\n      \"zipCode\": 20875\r\n    }\r\n  }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url_global}}/updateuser/{{userid}}",
-					"host": [
-						"{{url_global}}"
-					],
-					"path": [
-						"updateuser",
 						"{{userid}}"
 					]
 				}
