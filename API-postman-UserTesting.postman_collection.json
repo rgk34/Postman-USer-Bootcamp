@@ -1,0 +1,719 @@
+{
+	"info": {
+		"_postman_id": "37e7fad0-f174-42de-ac46-296f965e4ea5",
+		"name": "API-postman-UserTesting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37274119"
+	},
+	"item": [
+		{
+			"name": "Create new user with valid fields",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"//Testing headers\r",
+							"//Check that a response header is present:\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+							"});\r",
+							"//Test for a response header having a particular value:\r",
+							"pm.test(\"Content-Type header is application/json\", () => {\r",
+							" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+							"});\r",
+							"\r",
+							"//Schema validating\r",
+							"var jsonData = pm.response.json();\r",
+							"var schema ={\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"userAddress\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"addressId\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"plotNumber\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"street\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"state\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"country\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"zipCode\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"addressId\",\r",
+							"        \"plotNumber\",\r",
+							"        \"street\",\r",
+							"        \"state\",\r",
+							"        \"country\",\r",
+							"        \"zipCode\"\r",
+							"      ]\r",
+							"    },\r",
+							"    \"user_id\": {\r",
+							"      \"type\": \"integer\"\r",
+							"    },\r",
+							"    \"user_first_name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"user_last_name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"user_contact_number\": {\r",
+							"      \"type\": \"integer\"\r",
+							"    },\r",
+							"    \"user_email_id\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"creation_time\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"last_mod_time\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"userAddress\",\r",
+							"    \"user_id\",\r",
+							"    \"user_first_name\",\r",
+							"    \"user_last_name\",\r",
+							"    \"user_contact_number\",\r",
+							"    \"user_email_id\",\r",
+							"    \"creation_time\",\r",
+							"    \"last_mod_time\"\r",
+							"  ]\r",
+							"}\r",
+							"// Validate the schema\r",
+							"pm.test('Schema is valid', function() {\r",
+							"    var result = tv4.validateResult(jsonData, schema);\r",
+							"});\r",
+							"// Validate status text\r",
+							"pm.test(\"Status text is Created\", function () {\r",
+							"    pm.expect(pm.response.status).to.eql(\"Created\");\r",
+							"});\r",
+							"\r",
+							"//To generate random string\r",
+							"//var random=Math.random().toString(36).substring(2);\r",
+							"//To capture the response Body\r",
+							"\r",
+							"//var jsonData=JSON.parse(responseBody);\r",
+							"//To extract id\r",
+							"//pm.environment.set(\"user_id\",jsonData.user_id);\r",
+							"//pm.environment.set(\"user_first_name\",jsonData.user_first_name);\r",
+							"//pm.environment.set(\"user_email_id\",jsonData.user_email_id);\r",
+							"pm.test(\"User created successfully\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(201); // Expect 201 for created\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.environment.set(\"userId\", String(responseJson.user_id)); // Convert user_id to string and set it\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "Numpy@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "userapi@october",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_first_name\": \"{{user_first_name}}\",\r\n    \"user_last_name\": \"{{user_last_name}}\",\r\n    \"user_contact_number\": {{user_contact_number}},\r\n    \"user_email_id\": \"{{user_email_id}}\",\r\n    \"userAddress\": {\r\n        \"plotNumber\": \"{{plotNumber}}\",\r\n        \"street\": \"{{street}}\",\r\n        \"state\": \"{{state}}\",\r\n        \"country\": \"{{country}}\",\r\n        \"zipCode\": {{zipCode}}\r\n    }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_global}}/{{posturl_QA_env}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"{{posturl_QA_env}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new User with Existing Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test for creating a new user with existing email\r",
+							"pm.test(\"Status code is as expected\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(409); // Expect 409 for existing email\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "Numpy@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "userapi@october",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_first_name\": \"{{user_first_name}}\",\r\n    \"user_last_name\": \"{{user_last_name}}\",\r\n    \"user_contact_number\": {{user_contact_number}},\r\n    \"user_email_id\": \"{{user_email_id}}\",\r\n    \"userAddress\": {\r\n        \"plotNumber\": \"{{plotNumber}}\",\r\n        \"street\": \"{{street}}\",\r\n        \"state\": \"{{state}}\",\r\n        \"country\": \"{{country}}\",\r\n        \"zipCode\": {{zipCode}}\r\n    }\r\n}\r\n\r\n  ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_global}}/{{posturl_QA_env}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"{{posturl_QA_env}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllUsers",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"//If you want to check that the Content-Type contains json (ignoring other parts):\r",
+							"pm.test(\"Content-Type contains json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Validate status text\r",
+							"pm.test(\"Status text is OK\", function () {\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_global}}/{{Geturl_QA_env}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"{{Geturl_QA_env}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by Userid",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"userid\", \"10112\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"//validating json fields in response\r",
+							"//pm.test(\"values of json fields\",() =>{\r",
+							"//var jsonData=pm.response.json();\r",
+							"\r",
+							"//After getting the response we should compare the response with actual envirnoment variables\r",
+							"//pm.expect(jsonData.user_id).to.eql(pm.environment.get(\"user_id\"));\r",
+							"//pm.expect(jsonData.user_first_name).to.eql(pm.environment.get(\"user_first_name\"));\r",
+							"//pm.expect(jsonData.user_email_id).to.eql(pm.environment.get(\"user_email_id\"));\r",
+							"//});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_global}}/user/{{userid}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"user",
+						"{{userid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get the User by First Name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"userFirstName\", \"GK\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_global}}/users/username/{{userFirstName}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"users",
+						"username",
+						"{{userFirstName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User sets the Basic authorization with valid Username and invalid Password",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "userapi",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Numpy@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_global}}/{{Geturl_QA_env}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"{{Geturl_QA_env}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a new user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User created successfully\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(201); // Expect status code 201 for created\r",
+							"    const responseJson = pm.response.json(); // Parse the response as JSON\r",
+							"    if (responseJson.user_id) {  // Check if user_id is present in the response\r",
+							"        pm.environment.set(\"userId\", responseJson.user_id); // Set userId in the environment\r",
+							"        console.log(\"User ID set:\", responseJson.user_id); // Log the userId for debugging\r",
+							"    } else {\r",
+							"        pm.test(\"Response does not contain user_id\", function() {\r",
+							"            pm.expect.fail(\"user_id not found in the response\");\r",
+							"        });\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_first_name\": \"RagRash\",\r\n    \"user_last_name\": \"SiriSonu\",\r\n    \"user_contact_number\": 3010191421,\r\n    \"user_email_id\": \"Team01SiriSonuRR@gmail.com\",\r\n    \"userAddress\": {\r\n      \"plotNumber\": \"P1-11\",\r\n      \"street\": \"Main\",\r\n      \"state\": \"LA\",\r\n      \"country\": \"USA\",\r\n      \"zipCode\": 20875\r\n    }\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_global}}/{{posturl_QA_env}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"{{posturl_QA_env}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate if the User update is done with missing EmailId",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//pm.environment.set(\"userid\", \"10257\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check for successful user update\r",
+							"pm.test(\"Status code is 200 for successful user update\", function () {\r",
+							"    if (pm.response.code === 200) {\r",
+							"        pm.expect(pm.response.code).to.eql(200); // Expect 200 for successful update\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// Check for missing email ID\r",
+							"pm.test(\"Status code is 400 for missing email ID\", function () {\r",
+							"    if (pm.response.code === 400) {\r",
+							"        pm.expect(pm.response.code).to.eql(400); // Expect 400 for missing email ID\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// Test the error message for missing email ID\r",
+							"pm.test(\"Response message indicates missing email ID\", function () {\r",
+							"    if (pm.response.code === 400) {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.message).to.include(\"User email Id is required\");\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"user_first_name\": \"{{user_first_name}}\",\r\n    \"user_last_name\": \"{{user_last_name}}\",\r\n    \"user_contact_number\": {{user_contact_number}},\r\n    \"user_email_id\": \"{{user_email_id}}\",\r\n    \"userAddress\": {\r\n        \"plotNumber\": \"{{plotNumber}}\",\r\n        \"street\": \"{{street}}\",\r\n        \"state\": \"{{state}}\",\r\n        \"country\": \"{{country}}\",\r\n        \"zipCode\": {{zipCode}}\r\n    }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_global}}/updateuser/{{userid}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"updateuser",
+						"{{userid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user by userid",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//pm.environment.set(\"userid\", \"8887\");\r",
+							"// Check if the userId is set before proceeding\r",
+							"pm.test(\"Check if userId is set\", function () {\r",
+							"    pm.expect(pm.environment.get(\"userId\")).to.not.be.undefined; // Ensure userId is not undefined\r",
+							"    pm.expect(pm.environment.get(\"userId\")).to.not.be.empty; // Ensure userId is not empty\r",
+							"});\r",
+							"\r",
+							"// Check for successful deletion\r",
+							"pm.test(\"User deleted successfully\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(200); // Expect 200 for successful deletion\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User deleted successfully\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(200); // Expect 200 for successful deletion\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url_global}}/deleteuser/{{userid}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"deleteuser",
+						"{{userid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update by UserId",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 for successful user update\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(200); // Expect status code 200 for a successful update\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is as expected\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(200); // Expect 200 OK for successful update\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains updated user information\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.user_last_name).to.eql(\"Smithy\"); // Check if the last name is updated\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "userapi@october",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Numpy@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_first_name\": \"RagRash\",\r\n    \"user_last_name\": \"SiriSonu\",\r\n    \"user_contact_number\": 4874191484,\r\n    \"user_email_id\": \"Team03RSiriSonuR@gmail.com\",\r\n    \"userAddress\": {\r\n      \"plotNumber\": \"P1-11\",\r\n      \"street\": \"Main\",\r\n      \"state\": \"LA\",\r\n      \"country\": \"USA\",\r\n      \"zipCode\": 20875\r\n    }\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_global}}/updateuser/{{userid}}",
+					"host": [
+						"{{url_global}}"
+					],
+					"path": [
+						"updateuser",
+						"{{userid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "userapi@october",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "Numpy@gmail.com",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
